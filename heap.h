@@ -2,6 +2,7 @@
 #define HEAP_H
 #include <functional>
 #include <stdexcept>
+#include <vector> // Include vector for vector container of heap
 
 template <typename T, typename PComparator = std::less<T> >
 class Heap
