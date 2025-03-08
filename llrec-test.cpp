@@ -66,10 +66,17 @@ void dealloc(Node* head)
 //   Add any helper functions or
 //   function object struct declarations
 // -----------------------------------------------
+struct IsOdd {
+    bool operator()(int value) {
+        return (value % 2) != 0;  // returns true if value is odd
+    }
+};
 
-
-
-
+struct IsEven {
+    bool operator()(int value) {
+        return (value % 2) == 0;      // returns true if value is even
+    }
+};
 
 int main(int argc, char* argv[])
 {
@@ -81,15 +88,64 @@ int main(int argc, char* argv[])
     // -----------------------------------------------
     // Feel free to update any code below this point
     // -----------------------------------------------
+
+    // 1) Test llpivot()
+    // Read the list from file
     Node* head = readList(argv[1]);
-    cout << "Original list: ";
+
+    cout << "Original list for pivot test:" << endl;
     print(head);
 
-    // Test out your linked list code
+    // Choose a pivot (you could parse from argv if you like)
+    int pivotVal = 10;
+    Node* smaller = nullptr;
+    Node* larger = nullptr;
 
+    // Partition the list
+    llpivot(head, smaller, larger, pivotVal);
 
+    cout << "Pivot value = " << pivotVal << endl;
+    cout << "smaller (<= pivot): ";
+    print(smaller);
+    cout << "larger  (> pivot): ";
+    print(larger);
 
-    
+    // Clean up
+    dealloc(smaller);
+    dealloc(larger);
+    // 'head' is now nullptr due to llpivot()
+
+    cout << endl;
+
+    // 2) Test llfilter()
+    // Read the list again (since the previous call to llpivot used it up)
+    head = readList(argv[1]);
+
+    cout << "Original list for filter test:" << endl;
+    print(head);
+
+    // Example: filter out odd numbers
+    Node* filtered = llfilter(head, IsOdd());
+    cout << "After removing odd values:" << endl;
+    print(filtered);
+
+    // Clean up
+    dealloc(filtered);
+
+    cout << endl;
+
+    // Optionally, do another test: for example, remove anything > 5
+    head = readList(argv[1]);
+    cout << "Original list again (for second filter test):" << endl;
+    print(head);
+
+    Node* filtered2 = llfilter(head, IsEven());
+    cout << "After removing even values" << endl;
+    print(filtered2);
+
+    // Clean up again
+    dealloc(filtered2);
+
     return 0;
 
 }

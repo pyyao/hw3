@@ -88,3 +88,29 @@ Event* Or2Gate::update(uint64_t current_time)
 	}
   return e;
 }
+// Implementation of NotGate
+NotGate::NotGate(Wire* i, Wire* o) : Gate(1, o) 
+{
+    wireInput(0, i); // NotGate() has one input wire
+}
+
+Event* NotGate::update(uint64_t current_time)
+{
+    char state = 'X'; // Initialize output state to undefined 'X' (because if input state is 'X', output state is still 'X')
+    Event* e = nullptr;
+    char in = m_inputs[0]->getState(); // Get input state
+    if(in == '0'){ // Implement truth table
+        state = '1';
+    }
+    else if(in == '1'){
+        state = '0';
+    }
+    if(state != m_current_state) // If output state is different than current state, update Event and return
+	{
+    m_current_state = state;
+		uint64_t next = current_time + m_delay;
+		e = new Event {next,m_output,state};
+         
+	}
+  return e;
+}

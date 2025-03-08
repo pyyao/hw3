@@ -83,8 +83,20 @@ Node* llfilter(Node* head, Comp pred)
     //*********************************************
     // Provide your implementation below
     //*********************************************
-
-
+    // Base case: reached end of list, return nullptr so last item will point to nullptr
+    if (head == nullptr) {
+        return nullptr;
+    }
+    // Check whether current node should be removed from list
+    if (pred(head->val) == true) { // Node should be removed
+        Node* rest = head->next; // Temporarily save the rest of the list to call recursion on
+        delete head; // Deallocate current node to remove from list
+        return llfilter(rest, pred); // Recurisively call llfilter on the rest of the list
+    }
+    else { // Node should be kept
+        head->next = llfilter(head->next, pred); // Recursively call llfilter on the rest of the list
+        return head; // Return pointer to head of the list
+    }
 }
 
 #endif

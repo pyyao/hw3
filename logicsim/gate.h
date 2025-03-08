@@ -34,5 +34,12 @@ class Or2Gate : public Gate
       Or2Gate(Wire*, Wire*, Wire*);
       Event* update(uint64_t);
 };
+// Implementation of NotGate()
+class NotGate : public Gate
+{
+public:
+    NotGate(Wire*, Wire*); // NotGate has one input wire, one output wire
+    Event* update(uint64_t); // update() will update Event if state changes after NotGate()
+};
 
 #endif
